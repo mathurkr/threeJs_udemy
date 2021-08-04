@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <script src="three.min.js"></script> 
+        <!-- Can also look for local location for three js master folder -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" referrerpolicy="no-referrer"></script> -->
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        
+    </body>
+    <script>
+        let scene, camera, renderer, cube;
+        let ADD=0.01;
+        let createCube= function(){
+            let g= new THREE.BoxGeometry(1,2,1);//geometry
+            let m= new THREE.MeshBasicMaterial({color: 0x00a1cb,opacity:0.80,transparent:true});//material
+            cube = new THREE.Mesh(g,m);
+            scene.add(cube);
+        }
+
+        let init = function(){
+            //1. Create a scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xababab);
+            var axesHelper = new THREE.AxesHelper( 5 );
+            scene.add( axesHelper );
+
+            //2. Create and locate the camera
+            camera = new THREE.PerspectiveCamera(30,window.innerWidth/window.innerHeight,1,1000);
+            camera.position.z=5;
+
+            //Create and locate geometry
+            createCube();
+
+            //Create renderer
+            renderer= new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+            
+            document.body.appendChild(renderer.domElement);
+        }
+
+        let mainLoop=function(){
+            cube.position.x+=ADD;
+            if (cube.position.x <=-3||cube.position.x>=3){
+                ADD*=-1;
+            }
+            renderer.render(scene,camera);
+            requestAnimationFrame(mainLoop);
+        }
+        init();
+        mainLoop();
+    </script>
+</html>
